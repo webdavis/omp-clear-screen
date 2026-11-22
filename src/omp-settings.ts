@@ -6,6 +6,6 @@ export class OmpSettings implements Settings {
 
   async clearKey(cwd: string): Promise<string> {
     const { key } = await this.store.read("omp-clear-screen", cwd);
-    return (key as string | undefined) ?? "ctrl+l";
+    return typeof key === "string" ? key : "ctrl+l";
   }
 }

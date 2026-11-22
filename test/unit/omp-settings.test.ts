@@ -23,6 +23,13 @@ test("clearKey answers the key that is set", async () => {
   expect(await sut.clearKey("/a/project")).toBe("alt+k");
 });
 
+test("clearKey answers ctrl+l when the key that is set is not text", async () => {
+  const { sut, store } = makeSUT();
+  store.holds({ key: 5 });
+
+  expect(await sut.clearKey("/a/project")).toBe("ctrl+l");
+});
+
 function makeSUT() {
   const store = new PluginSettingsStoreSpy();
   const sut = new OmpSettings(store);
