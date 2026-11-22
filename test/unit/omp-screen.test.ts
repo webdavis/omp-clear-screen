@@ -52,6 +52,16 @@ test("clear looks past a component that holds no others", async () => {
   expect(transcript.messages).toContain("clear");
 });
 
+test("clear looks past a component whose children are not a list", async () => {
+  const { sut, context } = makeSUT();
+  const transcript = new TranscriptSpy();
+  context.showScreen({ children: {} }, transcript);
+
+  await sut.clear();
+
+  expect(transcript.messages).toContain("clear");
+});
+
 test("clear disposes the transcript's components before it empties it", async () => {
   const { sut, context } = makeSUT();
   const transcript = new TranscriptSpy();
