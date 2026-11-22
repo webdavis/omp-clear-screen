@@ -1,5 +1,6 @@
 import type { ExtensionContext } from "@oh-my-pi/pi-coding-agent";
 import type { Component, Container } from "@oh-my-pi/pi-tui";
+import type { Screen } from "./screen.ts";
 
 export type OmpContext = Pick<ExtensionContext, "isIdle"> & { ui: Pick<ExtensionContext["ui"], "notify" | "custom"> };
 
@@ -18,7 +19,7 @@ function findTranscript(component: Component): Container | undefined {
   return undefined;
 }
 
-export class OmpScreen {
+export class OmpScreen implements Screen {
   constructor(private readonly context: OmpContext) {}
 
   isBusy(): boolean {
