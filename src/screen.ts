@@ -1,1 +1,3 @@
-export interface Screen {}
+export interface Screen {
+  clear(): void;
+}

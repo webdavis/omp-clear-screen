@@ -8,6 +8,14 @@ test("init does not message the screen", () => {
   expect(screen.messages).toEqual([]);
 });
 
+test("handleKey clears the screen on ctrl+l", () => {
+  const { sut, screen } = makeSUT();
+
+  sut.handleKey("\f");
+
+  expect(screen.messages).toEqual(["clear"]);
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
