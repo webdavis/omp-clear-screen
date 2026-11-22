@@ -1,0 +1,52 @@
+{
+  "name": "omp-clear-screen",
+  "version": "0.1.0",
+  "description": "Clear omp's screen and scrollback with Ctrl+L, keeping the session and its context.",
+  "keywords": [
+    "omp",
+    "oh-my-pi",
+    "omp-plugin",
+    "omp-extension",
+    "clear-screen",
+    "keybinding"
+  ],
+  "license": "MIT",
+  "author": "Stephen A. Davis (https://github.com/webdavis)",
+  "homepage": "https://github.com/webdavis/omp-clear-screen#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdavis/omp-clear-screen.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webdavis/omp-clear-screen/issues"
+  },
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "omp": {
+    "extensions": [
+      "./src/clear-screen.ts"
+    ],
+    "settings": {
+      "key": {
+        "type": "string",
+        "default": "ctrl+l",
+        "description": "The key that clears the screen, named as in omp's keybindings.yml"
+      }
+    }
+  },
+  "scripts": {
+    "test": "bun test test/unit",
+    "test:omp": "bun test test/omp",
+    "test:all": "bun test",
+    "check": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@oh-my-pi/pi-coding-agent": "19.1.0",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2"
+  }
+}

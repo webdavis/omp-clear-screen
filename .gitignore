@@ -1,0 +1,6 @@
+node_modules
+.DS_Store
+
+# Vim keeps a swap file beside each file it has open.
+[._]*.sw[a-p]
+[._]sw[a-p]
