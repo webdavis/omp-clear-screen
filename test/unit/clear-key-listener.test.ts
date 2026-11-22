@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { HotkeyScreenClearer } from "../../src/hotkey-screen-clearer.ts";
+import { ClearKeyListener } from "../../src/clear-key-listener.ts";
 import { CLEAR_KEY, KeyboardStub } from "../helpers/keyboard-stub.ts";
 import { ScreenClearerSpy } from "../helpers/screen-clearer-spy.ts";
 
@@ -34,6 +34,6 @@ test("handleKey ignores any other key", () => {
 
 function makeSUT() {
   const clearer = new ScreenClearerSpy();
-  const sut = new HotkeyScreenClearer(new KeyboardStub(), clearer);
+  const sut = new ClearKeyListener(new KeyboardStub(), clearer);
   return { sut, clearer };
 }

@@ -2,7 +2,7 @@ import type { KeyAnswer, KeyListener } from "./key-listener.ts";
 import type { Keyboard } from "./keyboard.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 
-export class HotkeyScreenClearer implements KeyListener {
+export class ClearKeyListener implements KeyListener {
   constructor(
     private readonly keyboard: Keyboard,
     private readonly clearer: ScreenClearer,

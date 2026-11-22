@@ -1,5 +1,5 @@
 import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
-import { HotkeyScreenClearer } from "./hotkey-screen-clearer.ts";
+import { ClearKeyListener } from "./clear-key-listener.ts";
 import { IdleScreenClearer } from "./idle-screen-clearer.ts";
 import { OmpKeyboard } from "./omp-keyboard.ts";
 import { OmpScreen } from "./omp-screen.ts";
@@ -27,7 +27,7 @@ export function clearScreenExtensionWith(settings: Settings) {
 
     pi.on("session_start", async (_event, ctx) => {
       const keyboard = new OmpKeyboard(await settings.clearKey(ctx.cwd));
-      const listener = new HotkeyScreenClearer(keyboard, clearerFor(ctx));
+      const listener = new ClearKeyListener(keyboard, clearerFor(ctx));
       ctx.ui.onTerminalInput((data) => listener.handleKey(data));
     });
   };
