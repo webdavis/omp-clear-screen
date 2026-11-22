@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { CtrlLScreenClearer } from "../../src/ctrl-l-screen-clearer.ts";
+import { HotkeyScreenClearer } from "../../src/hotkey-screen-clearer.ts";
 import { CLEAR_KEY, KeyboardStub } from "../helpers/keyboard-stub.ts";
 import { ScreenSpy } from "../helpers/screen-spy.ts";
 
@@ -60,6 +60,6 @@ test("clear reports an error when omp's transcript cannot be found", async () =>
 
 function makeSUT() {
   const screen = new ScreenSpy();
-  const sut = new CtrlLScreenClearer(new KeyboardStub(), screen);
+  const sut = new HotkeyScreenClearer(new KeyboardStub(), screen);
   return { sut, screen };
 }

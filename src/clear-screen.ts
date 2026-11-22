@@ -1,11 +1,11 @@
 import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
-import { CtrlLScreenClearer } from "./ctrl-l-screen-clearer.ts";
+import { HotkeyScreenClearer } from "./hotkey-screen-clearer.ts";
 import { OmpKeyboard } from "./omp-keyboard.ts";
 import { OmpScreen } from "./omp-screen.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 
 function clearerFor(ctx: ExtensionContext): ScreenClearer {
-  return new CtrlLScreenClearer(new OmpKeyboard(), new OmpScreen(ctx));
+  return new HotkeyScreenClearer(new OmpKeyboard(), new OmpScreen(ctx));
 }
 
 export default function clearScreenExtension(pi: Pick<ExtensionAPI, "on" | "registerCommand">) {
