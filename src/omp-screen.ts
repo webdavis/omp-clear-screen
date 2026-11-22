@@ -12,4 +12,8 @@ export class OmpScreen {
   warn(message: string): void {
     this.context.ui.notify(message, "warning");
   }
+
+  reportError(message: string): void {
+    this.context.ui.notify(message, "error");
+  }
 }
