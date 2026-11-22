@@ -7,6 +7,7 @@ import type { PluginSettingsStore } from "./plugin-settings-store.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 import type { Settings } from "./settings.ts";
 
+// Importing the loader on first read lets the extension load, with its default key, after omp moves the loader.
 const ompPluginSettings: PluginSettingsStore = {
   read: async (plugin, cwd) =>
     (await import("@oh-my-pi/pi-coding-agent/extensibility/plugins/loader")).getPluginSettings(plugin, cwd),
