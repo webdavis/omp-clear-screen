@@ -2,17 +2,11 @@ import type { ExtensionAPI, ExtensionContext } from "@oh-my-pi/pi-coding-agent";
 import { ClearKeyListener } from "./clear-key-listener.ts";
 import { IdleScreenClearer } from "./idle-screen-clearer.ts";
 import { OmpKeyboard } from "./omp-keyboard.ts";
+import { OmpPluginSettingsStore } from "./omp-plugin-settings-store.ts";
 import { OmpScreen } from "./omp-screen.ts";
 import { OmpSettings } from "./omp-settings.ts";
-import type { PluginSettingsStore } from "./plugin-settings-store.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 import type { Settings } from "./settings.ts";
-
-// Importing the loader on first read lets the extension load, with its default key, after omp moves the loader.
-const ompPluginSettings: PluginSettingsStore = {
-  read: async (plugin, cwd) =>
-    (await import("@oh-my-pi/pi-coding-agent/extensibility/plugins/loader")).getPluginSettings(plugin, cwd),
-};
 
 function clearerFor(ctx: ExtensionContext): ScreenClearer {
   return new IdleScreenClearer(new OmpScreen(ctx));
@@ -33,4 +27,4 @@ export function clearScreenExtensionWith(settings: Settings) {
   };
 }
 
-export default clearScreenExtensionWith(new OmpSettings(ompPluginSettings));
+export default clearScreenExtensionWith(new OmpSettings(new OmpPluginSettingsStore()));
