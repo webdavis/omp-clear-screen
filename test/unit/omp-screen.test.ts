@@ -52,6 +52,15 @@ test("clear disposes the transcript's components before it empties it", async ()
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
+test("clear redraws the screen without its scrollback", async () => {
+  const { sut, context } = makeSUT();
+  context.showScreen(new TranscriptSpy());
+
+  await sut.clear();
+
+  expect(context.renderRequests).toEqual([[true, { clearScrollback: true }]]);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);

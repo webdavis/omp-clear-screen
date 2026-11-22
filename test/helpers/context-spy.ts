@@ -4,6 +4,7 @@ type ShowsACustomComponent = (tui: never, theme: never, keybindings: never, done
 
 export class ContextSpy implements OmpContext {
   readonly notifications: { message: string; level?: string }[] = [];
+  readonly renderRequests: unknown[][] = [];
   private idle = true;
   private screen: object = { children: [] };
 
@@ -24,7 +25,9 @@ export class ContextSpy implements OmpContext {
   showScreen(...children: object[]): void {
     this.screen = {
       children,
-      requestRender: () => {},
+      requestRender: (...request: unknown[]) => {
+        this.renderRequests.push(request);
+      },
     };
   }
 

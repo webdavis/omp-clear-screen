@@ -38,6 +38,7 @@ export class OmpScreen {
       const transcript = findTranscript(tui);
       transcript?.dispose();
       transcript?.clear();
+      tui.requestRender(true, { clearScrollback: true });
       done();
       return { render: () => [], invalidate: () => {} };
     });
