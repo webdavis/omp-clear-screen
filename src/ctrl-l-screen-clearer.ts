@@ -12,6 +12,10 @@ export class CtrlLScreenClearer implements ScreenClearer {
   }
 
   clear(): void {
+    if (this.screen.isBusy()) {
+      this.screen.warn("Clear the screen once the current response has finished.");
+      return;
+    }
     this.screen.clear();
   }
 }

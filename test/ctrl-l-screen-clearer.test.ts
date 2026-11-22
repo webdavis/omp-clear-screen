@@ -47,6 +47,15 @@ test("clear clears the screen", () => {
   expect(screen.messages).toEqual(["clear"]);
 });
 
+test("clear warns and leaves the screen alone while a response is running", () => {
+  const { sut, screen } = makeSUT();
+  screen.responseIsRunning();
+
+  sut.clear();
+
+  expect(screen.messages).toEqual(["warn"]);
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
