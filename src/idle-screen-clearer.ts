@@ -1,6 +1,7 @@
 import type { Screen } from "./screen.ts";
+import type { ScreenClearer } from "./screen-clearer.ts";
 
-export class IdleScreenClearer {
+export class IdleScreenClearer implements ScreenClearer {
   constructor(private readonly screen: Screen) {}
 
   async clear(): Promise<void> {

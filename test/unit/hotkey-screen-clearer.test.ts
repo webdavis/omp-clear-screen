@@ -1,20 +1,20 @@
 import { expect, test } from "bun:test";
 import { HotkeyScreenClearer } from "../../src/hotkey-screen-clearer.ts";
 import { CLEAR_KEY, KeyboardStub } from "../helpers/keyboard-stub.ts";
-import { ScreenSpy } from "../helpers/screen-spy.ts";
+import { ScreenClearerSpy } from "../helpers/screen-clearer-spy.ts";
 
-test("init does not message the screen", () => {
-  const { screen } = makeSUT();
+test("init does not message the clearer", () => {
+  const { clearer } = makeSUT();
 
-  expect(screen.messages).toEqual([]);
+  expect(clearer.messages).toEqual([]);
 });
 
 test("handleKey clears the screen on the key that clears", () => {
-  const { sut, screen } = makeSUT();
+  const { sut, clearer } = makeSUT();
 
   sut.handleKey(CLEAR_KEY);
 
-  expect(screen.messages).toEqual(["clear"]);
+  expect(clearer.messages).toEqual(["clear"]);
 });
 
 test("handleKey keeps the key that clears from omp", () => {
@@ -24,16 +24,16 @@ test("handleKey keeps the key that clears from omp", () => {
 });
 
 test("handleKey ignores any other key", () => {
-  const { sut, screen } = makeSUT();
+  const { sut, clearer } = makeSUT();
 
   const answer = sut.handleKey("any other key");
 
-  expect(screen.messages).toEqual([]);
+  expect(clearer.messages).toEqual([]);
   expect(answer).toBeUndefined();
 });
 
 function makeSUT() {
-  const screen = new ScreenSpy();
-  const sut = new HotkeyScreenClearer(new KeyboardStub(), screen);
-  return { sut, screen };
+  const clearer = new ScreenClearerSpy();
+  const sut = new HotkeyScreenClearer(new KeyboardStub(), clearer);
+  return { sut, clearer };
 }
