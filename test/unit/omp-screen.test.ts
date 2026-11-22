@@ -1,6 +1,7 @@
 import { expect, test } from "bun:test";
 import { OmpScreen } from "../../src/omp-screen.ts";
 import { ContextSpy } from "../helpers/context-spy.ts";
+import { TranscriptSpy } from "../helpers/transcript-spy.ts";
 
 test("isBusy answers true while omp is working", () => {
   const { sut, context } = makeSUT();
@@ -29,6 +30,16 @@ test("reportError shows an error in omp", () => {
   sut.reportError("an error");
 
   expect(context.notifications).toEqual([{ message: "an error", level: "error" }]);
+});
+
+test("clear finds a transcript nested inside other components", async () => {
+  const { sut, context } = makeSUT();
+  const transcript = new TranscriptSpy();
+  context.showScreen({ children: [{ children: [transcript] }] });
+
+  await sut.clear();
+
+  expect(transcript.messages).toContain("clear");
 });
 
 function makeSUT() {
