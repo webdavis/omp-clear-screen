@@ -6,7 +6,7 @@ export class CtrlLScreenClearer {
 
   handleKey(data: string): { consume: true } | undefined {
     if (!matchesKey(data, "ctrl+l")) return undefined;
-    this.screen.clear();
+    this.clear();
     return { consume: true };
   }
 
