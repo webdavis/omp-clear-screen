@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "test": "bun test",
+    "test": "bun test test/unit",
+    "test:omp": "bun test test/omp",
+    "test:all": "bun test",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

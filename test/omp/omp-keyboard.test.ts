@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { OmpKeyboard } from "../src/omp-keyboard.ts";
+import { OmpKeyboard } from "../../src/omp-keyboard.ts";
 
 test("isCtrlL recognises the byte a terminal sends for ctrl+l", () => {
   expect(makeSUT().isCtrlL("\f")).toBe(true);

@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
-import { CtrlLScreenClearer } from "../src/ctrl-l-screen-clearer.ts";
-import { CTRL_L, KeyboardStub } from "./helpers/keyboard-stub.ts";
-import { ScreenSpy } from "./helpers/screen-spy.ts";
+import { CtrlLScreenClearer } from "../../src/ctrl-l-screen-clearer.ts";
+import { CTRL_L, KeyboardStub } from "../helpers/keyboard-stub.ts";
+import { ScreenSpy } from "../helpers/screen-spy.ts";
 
 test("init does not message the screen", () => {
   const { screen } = makeSUT();
