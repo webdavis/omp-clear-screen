@@ -8,15 +8,15 @@ export class ContextSpy implements OmpContext {
   readonly renderRequests: unknown[][] = [];
   private idle = true;
   private screen: object = { children: [] };
-  private keyListener: (data: string) => unknown = () => undefined;
+  private readonly keyListeners = new Set<(data: string) => unknown>();
 
   readonly ui = {
     notify: (message: string, level?: string): void => {
       this.notifications.push({ message, level });
     },
     onTerminalInput: (listener: (data: string) => unknown): (() => void) => {
-      this.keyListener = listener;
-      return () => {};
+      this.keyListeners.add(listener);
+      return () => this.keyListeners.delete(listener);
     },
     custom: <T>(show: ShowsACustomComponent): Promise<T> =>
       new Promise((resolve) => {
@@ -29,11 +29,11 @@ export class ContextSpy implements OmpContext {
   }
 
   ompDropsKeyListeners(): void {
-    this.keyListener = () => undefined;
+    this.keyListeners.clear();
   }
 
-  keyArrives(data: string): unknown {
-    return this.keyListener(data);
+  keyArrives(data: string): void {
+    for (const listener of this.keyListeners) listener(data);
   }
 
   showScreen(...children: object[]): void {
