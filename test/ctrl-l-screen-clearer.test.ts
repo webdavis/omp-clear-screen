@@ -16,6 +16,12 @@ test("handleKey clears the screen on ctrl+l", () => {
   expect(screen.messages).toEqual(["clear"]);
 });
 
+test("handleKey keeps ctrl+l from omp", () => {
+  const { sut } = makeSUT();
+
+  expect(sut.handleKey("\f")).toEqual({ consume: true });
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
