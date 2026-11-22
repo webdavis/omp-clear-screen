@@ -3,6 +3,10 @@ export class TranscriptSpy {
 
   resetStableEmission(): void {}
 
+  dispose(): void {
+    this.messages.push("dispose");
+  }
+
   clear(): void {
     this.messages.push("clear");
   }

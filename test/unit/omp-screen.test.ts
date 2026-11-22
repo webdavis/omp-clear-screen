@@ -42,6 +42,16 @@ test("clear finds a transcript nested inside other components", async () => {
   expect(transcript.messages).toContain("clear");
 });
 
+test("clear disposes the transcript's components before it empties it", async () => {
+  const { sut, context } = makeSUT();
+  const transcript = new TranscriptSpy();
+  context.showScreen(transcript);
+
+  await sut.clear();
+
+  expect(transcript.messages).toEqual(["dispose", "clear"]);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);

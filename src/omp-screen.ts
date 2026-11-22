@@ -35,7 +35,9 @@ export class OmpScreen {
 
   async clear(): Promise<void> {
     await this.context.ui.custom<void>((tui, _theme, _keybindings, done) => {
-      findTranscript(tui)?.clear();
+      const transcript = findTranscript(tui);
+      transcript?.dispose();
+      transcript?.clear();
       done();
       return { render: () => [], invalidate: () => {} };
     });
