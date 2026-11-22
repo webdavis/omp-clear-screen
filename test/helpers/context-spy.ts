@@ -28,6 +28,10 @@ export class ContextSpy implements OmpContext {
     this.idle = false;
   }
 
+  ompDropsKeyListeners(): void {
+    this.keyListener = () => undefined;
+  }
+
   keyArrives(data: string): unknown {
     return this.keyListener(data);
   }

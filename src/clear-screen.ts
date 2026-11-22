@@ -19,11 +19,15 @@ export function clearScreenExtensionWith(settings: Settings) {
       handler: (_args, ctx) => clearerFor(ctx).clear(),
     });
 
-    pi.on("session_start", async (_event, ctx) => {
+    const listenForTheKey = async (_event: unknown, ctx: ExtensionContext) => {
       const keyboard = new OmpKeyboard(await settings.clearKey(ctx.cwd));
       const listener = new ClearKeyListener(keyboard, clearerFor(ctx));
       ctx.ui.onTerminalInput((data) => listener.handleKey(data));
-    });
+    };
+
+    // omp drops an extension's key listeners when the session changes, and does not start the session again.
+    pi.on("session_start", listenForTheKey);
+    pi.on("session_switch", listenForTheKey);
   };
 }
 

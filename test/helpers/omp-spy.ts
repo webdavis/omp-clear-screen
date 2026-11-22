@@ -17,6 +17,10 @@ export class OmpSpy {
     return this.handlers.get("session_start")?.({}, context);
   }
 
+  switchSession(context: object): unknown {
+    return this.handlers.get("session_switch")?.({}, context);
+  }
+
   runCommand(name: string, context: object): unknown {
     return this.commands.get(name)?.handler("", context);
   }
