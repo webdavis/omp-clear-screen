@@ -9,6 +9,12 @@ test("isBusy answers true while omp is working", () => {
   expect(sut.isBusy()).toBe(true);
 });
 
+test("isBusy answers false while omp is idle", () => {
+  const { sut } = makeSUT();
+
+  expect(sut.isBusy()).toBe(false);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);

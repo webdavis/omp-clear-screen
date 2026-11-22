@@ -6,6 +6,6 @@ export class OmpScreen {
   constructor(private readonly context: OmpContext) {}
 
   isBusy(): boolean {
-    return true;
+    return !this.context.isIdle();
   }
 }
