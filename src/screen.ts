@@ -1,5 +1,6 @@
 export interface Screen {
   isBusy(): boolean;
-  clear(): void;
+  clear(): Promise<boolean>;
   warn(message: string): void;
+  reportError(message: string): void;
 }

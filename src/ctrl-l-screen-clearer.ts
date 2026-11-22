@@ -7,15 +7,16 @@ export class CtrlLScreenClearer implements ScreenClearer {
 
   handleKey(data: string): KeyAnswer {
     if (!matchesKey(data, "ctrl+l")) return undefined;
-    this.clear();
+    void this.clear();
     return { consume: true };
   }
 
-  clear(): void {
+  async clear(): Promise<void> {
     if (this.screen.isBusy()) {
       this.screen.warn("Clear the screen once the current response has finished.");
       return;
     }
-    this.screen.clear();
+    const found = await this.screen.clear();
+    if (!found) this.screen.reportError("clear-screen cannot find omp's transcript; omp has changed.");
   }
 }
