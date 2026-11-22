@@ -13,8 +13,8 @@ export class OmpSpy {
     this.commands.set(name, command);
   }
 
-  startSession(context: object): void {
-    this.handlers.get("session_start")?.({}, context);
+  startSession(context: object): unknown {
+    return this.handlers.get("session_start")?.({}, context);
   }
 
   runCommand(name: string, context: object): unknown {
