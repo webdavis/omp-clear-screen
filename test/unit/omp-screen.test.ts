@@ -68,6 +68,14 @@ test("clear answers true when it found the transcript", async () => {
   expect(await sut.clear()).toBe(true);
 });
 
+test("clear answers false and redraws nothing when omp has no transcript", async () => {
+  const { sut, context } = makeSUT();
+  context.showScreen();
+
+  expect(await sut.clear()).toBe(false);
+  expect(context.renderRequests).toEqual([]);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);

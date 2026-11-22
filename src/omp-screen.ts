@@ -36,10 +36,12 @@ export class OmpScreen {
   clear(): Promise<boolean> {
     return this.context.ui.custom<boolean>((tui, _theme, _keybindings, done) => {
       const transcript = findTranscript(tui);
-      transcript?.dispose();
-      transcript?.clear();
-      tui.requestRender(true, { clearScrollback: true });
-      done(true);
+      if (transcript) {
+        transcript.dispose();
+        transcript.clear();
+        tui.requestRender(true, { clearScrollback: true });
+      }
+      done(transcript !== undefined);
       return { render: () => [], invalidate: () => {} };
     });
   }
