@@ -9,4 +9,8 @@ export class CtrlLScreenClearer {
     this.screen.clear();
     return { consume: true };
   }
+
+  clear(): void {
+    this.screen.clear();
+  }
 }

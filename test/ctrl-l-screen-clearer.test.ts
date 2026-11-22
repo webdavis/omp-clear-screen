@@ -39,6 +39,14 @@ test("handleKey clears the screen on ctrl+l sent in the Kitty keyboard protocol"
   expect(screen.messages).toEqual(["clear"]);
 });
 
+test("clear clears the screen", () => {
+  const { sut, screen } = makeSUT();
+
+  sut.clear();
+
+  expect(screen.messages).toEqual(["clear"]);
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
