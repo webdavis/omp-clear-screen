@@ -13,6 +13,14 @@ test("ctrl+l in an omp session empties the transcript", () => {
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
+test("the clear-screen command empties the transcript", async () => {
+  const { omp, context, transcript } = makeSUT();
+
+  await omp.runCommand("clear-screen", context);
+
+  expect(transcript.messages).toEqual(["dispose", "clear"]);
+});
+
 function makeSUT() {
   const omp = new OmpSpy();
   const context = new ContextSpy();
