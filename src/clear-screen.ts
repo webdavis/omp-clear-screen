@@ -28,6 +28,7 @@ export function clearScreenExtensionWith(settings: Settings) {
     // omp drops an extension's key listeners when the session changes, and does not start the session again.
     pi.on("session_start", listenForTheKey);
     pi.on("session_switch", listenForTheKey);
+    pi.on("session_branch", listenForTheKey);
   };
 }
 

@@ -34,6 +34,17 @@ test("ctrl+l empties the transcript after omp switches session", async () => {
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
+test("ctrl+l empties the transcript after omp branches the session", async () => {
+  const { omp, context, transcript } = makeSUT();
+  await omp.startSession(context);
+  context.ompDropsKeyListeners();
+  await omp.branchSession(context);
+
+  context.keyArrives("\f");
+
+  expect(transcript.messages).toEqual(["dispose", "clear"]);
+});
+
 test("the clear-screen command empties the transcript", async () => {
   const { omp, context, transcript } = makeSUT();
 

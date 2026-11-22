@@ -21,6 +21,10 @@ export class OmpSpy {
     return this.handlers.get("session_switch")?.({}, context);
   }
 
+  branchSession(context: object): unknown {
+    return this.handlers.get("session_branch")?.({}, context);
+  }
+
   runCommand(name: string, context: object): unknown {
     return this.commands.get(name)?.handler("", context);
   }
