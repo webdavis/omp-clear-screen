@@ -13,6 +13,15 @@ test("isClearKey rejects any other key", () => {
   expect(makeSUT().isClearKey("l")).toBe(false);
 });
 
-function makeSUT() {
-  return new OmpKeyboard();
+test("isClearKey recognises only the key it is given", () => {
+  const sut = makeSUT("alt+k");
+
+  expect([ALT_K, CTRL_L].map((data) => sut.isClearKey(data))).toEqual([true, false]);
+});
+
+const ALT_K = "\x1bk";
+const CTRL_L = "\f";
+
+function makeSUT(key = "ctrl+l") {
+  return new OmpKeyboard(key);
 }

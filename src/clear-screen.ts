@@ -5,7 +5,7 @@ import { OmpScreen } from "./omp-screen.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 
 function clearerFor(ctx: ExtensionContext): ScreenClearer {
-  return new HotkeyScreenClearer(new OmpKeyboard(), new OmpScreen(ctx));
+  return new HotkeyScreenClearer(new OmpKeyboard("ctrl+l"), new OmpScreen(ctx));
 }
 
 export default function clearScreenExtension(pi: Pick<ExtensionAPI, "on" | "registerCommand">) {
