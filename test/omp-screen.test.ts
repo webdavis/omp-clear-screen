@@ -15,6 +15,14 @@ test("isBusy answers false while omp is idle", () => {
   expect(sut.isBusy()).toBe(false);
 });
 
+test("warn shows a warning in omp", () => {
+  const { sut, context } = makeSUT();
+
+  sut.warn("a warning");
+
+  expect(context.notifications).toEqual([{ message: "a warning", level: "warning" }]);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);
