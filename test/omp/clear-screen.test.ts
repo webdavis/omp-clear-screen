@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { clearScreenExtensionWith } from "../../src/clear-screen.ts";
 import { ContextSpy } from "../helpers/context-spy.ts";
 import { OmpSpy } from "../helpers/omp-spy.ts";
-import { SettingsStub } from "../helpers/settings-stub.ts";
+import { SettingsSpy } from "../helpers/settings-spy.ts";
 import { TranscriptSpy } from "../helpers/transcript-spy.ts";
 
 test("ctrl+l in an omp session empties the transcript", async () => {
@@ -31,11 +31,20 @@ test("the clear-screen command empties the transcript", async () => {
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
+test("the clear-screen command does not read the key setting", async () => {
+  const { omp, context, settings } = makeSUT();
+
+  await omp.runCommand("clear-screen", context);
+
+  expect(settings.messages).toEqual([]);
+});
+
 function makeSUT(key = "ctrl+l") {
   const omp = new OmpSpy();
   const context = new ContextSpy();
   const transcript = new TranscriptSpy();
+  const settings = new SettingsSpy(key);
   context.showScreen(transcript);
-  clearScreenExtensionWith(new SettingsStub(key))(omp);
-  return { omp, context, transcript };
+  clearScreenExtensionWith(settings)(omp);
+  return { omp, context, transcript, settings };
 }

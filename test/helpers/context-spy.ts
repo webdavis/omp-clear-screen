@@ -3,6 +3,7 @@ import type { OmpContext } from "../../src/omp-screen.ts";
 type ShowsACustomComponent = (tui: never, theme: never, keybindings: never, done: (result: never) => void) => unknown;
 
 export class ContextSpy implements OmpContext {
+  readonly cwd = "/a/project";
   readonly notifications: { message: string; level?: string }[] = [];
   readonly renderRequests: unknown[][] = [];
   private idle = true;
