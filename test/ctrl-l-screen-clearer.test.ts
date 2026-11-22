@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import { CtrlLScreenClearer } from "../src/ctrl-l-screen-clearer.ts";
-import { OmpKeyboard } from "../src/omp-keyboard.ts";
+import { CTRL_L, KeyboardStub } from "./helpers/keyboard-stub.ts";
 import { ScreenSpy } from "./helpers/screen-spy.ts";
 
 test("init does not message the screen", () => {
@@ -12,7 +12,7 @@ test("init does not message the screen", () => {
 test("handleKey clears the screen on ctrl+l", () => {
   const { sut, screen } = makeSUT();
 
-  sut.handleKey("\f");
+  sut.handleKey(CTRL_L);
 
   expect(screen.messages).toEqual(["clear"]);
 });
@@ -20,24 +20,16 @@ test("handleKey clears the screen on ctrl+l", () => {
 test("handleKey keeps ctrl+l from omp", () => {
   const { sut } = makeSUT();
 
-  expect(sut.handleKey("\f")).toEqual({ consume: true });
+  expect(sut.handleKey(CTRL_L)).toEqual({ consume: true });
 });
 
 test("handleKey ignores any other key", () => {
   const { sut, screen } = makeSUT();
 
-  const answer = sut.handleKey("l");
+  const answer = sut.handleKey("any other key");
 
   expect(screen.messages).toEqual([]);
   expect(answer).toBeUndefined();
-});
-
-test("handleKey clears the screen on ctrl+l sent in the Kitty keyboard protocol", () => {
-  const { sut, screen } = makeSUT();
-
-  sut.handleKey("\x1b[108;5u");
-
-  expect(screen.messages).toEqual(["clear"]);
 });
 
 test("clear clears the screen", () => {
@@ -68,6 +60,6 @@ test("clear reports an error when omp's transcript cannot be found", async () =>
 
 function makeSUT() {
   const screen = new ScreenSpy();
-  const sut = new CtrlLScreenClearer(new OmpKeyboard(), screen);
+  const sut = new CtrlLScreenClearer(new KeyboardStub(), screen);
   return { sut, screen };
 }
