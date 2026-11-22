@@ -1,15 +1,17 @@
 import type { PluginSettingsStore } from "./plugin-settings-store.ts";
 import type { Settings } from "./settings.ts";
 
+const DEFAULT_KEY = "ctrl+l";
+
 export class OmpSettings implements Settings {
   constructor(private readonly store: PluginSettingsStore) {}
 
   async clearKey(cwd: string): Promise<string> {
     try {
       const { key } = await this.store.read("omp-clear-screen", cwd);
-      return typeof key === "string" ? key : "ctrl+l";
+      return typeof key === "string" ? key : DEFAULT_KEY;
     } catch {
-      return "ctrl+l";
+      return DEFAULT_KEY;
     }
   }
 }
