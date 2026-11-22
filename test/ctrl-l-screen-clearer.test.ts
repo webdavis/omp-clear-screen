@@ -22,6 +22,15 @@ test("handleKey keeps ctrl+l from omp", () => {
   expect(sut.handleKey("\f")).toEqual({ consume: true });
 });
 
+test("handleKey ignores any other key", () => {
+  const { sut, screen } = makeSUT();
+
+  const answer = sut.handleKey("l");
+
+  expect(screen.messages).toEqual([]);
+  expect(answer).toBeUndefined();
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
