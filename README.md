@@ -12,7 +12,7 @@ omp plugin install npm:omp-clear-screen
 
 Restart omp after the install.
 
-omp binds `Ctrl+L` to live voice mode, and this extension takes the key first. To keep live voice, give it another key in `~/.omp/agent/keybindings.yml`:
+omp binds `Ctrl+L` to live voice mode, and this extension takes the key first. To keep live voice, [choose another key](#choose-the-key) for clearing, or give live voice another key in `~/.omp/agent/keybindings.yml`:
 
 ```yaml
 app.live.toggle: "alt+'"
@@ -23,6 +23,16 @@ app.live.toggle: "alt+'"
 Press `Ctrl+L`, or run `/clear-screen`.
 
 While a response is running, the extension shows a warning and clears nothing.
+
+## Choose the key
+
+`Ctrl+L` is the default. To clear the screen with another key, set it and restart omp:
+
+```sh
+omp plugin config set omp-clear-screen key alt+k
+```
+
+Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`. A name omp does not know clears nothing. `/clear-screen` works whichever key is set.
 
 ## Limits
 
