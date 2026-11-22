@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import { CtrlLScreenClearer } from "../../src/ctrl-l-screen-clearer.ts";
-import { CTRL_L, KeyboardStub } from "../helpers/keyboard-stub.ts";
+import { CLEAR_KEY, KeyboardStub } from "../helpers/keyboard-stub.ts";
 import { ScreenSpy } from "../helpers/screen-spy.ts";
 
 test("init does not message the screen", () => {
@@ -9,18 +9,18 @@ test("init does not message the screen", () => {
   expect(screen.messages).toEqual([]);
 });
 
-test("handleKey clears the screen on ctrl+l", () => {
+test("handleKey clears the screen on the key that clears", () => {
   const { sut, screen } = makeSUT();
 
-  sut.handleKey(CTRL_L);
+  sut.handleKey(CLEAR_KEY);
 
   expect(screen.messages).toEqual(["clear"]);
 });
 
-test("handleKey keeps ctrl+l from omp", () => {
+test("handleKey keeps the key that clears from omp", () => {
   const { sut } = makeSUT();
 
-  expect(sut.handleKey(CTRL_L)).toEqual({ consume: true });
+  expect(sut.handleKey(CLEAR_KEY)).toEqual({ consume: true });
 });
 
 test("handleKey ignores any other key", () => {

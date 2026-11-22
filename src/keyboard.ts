@@ -1,3 +1,3 @@
 export interface Keyboard {
-  isCtrlL(data: string): boolean;
+  isClearKey(data: string): boolean;
 }

@@ -9,7 +9,7 @@ export class CtrlLScreenClearer implements ScreenClearer {
   ) {}
 
   handleKey(data: string): KeyAnswer {
-    if (!this.keyboard.isCtrlL(data)) return undefined;
+    if (!this.keyboard.isClearKey(data)) return undefined;
     void this.clear();
     return { consume: true };
   }
