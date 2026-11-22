@@ -27,7 +27,14 @@
   "omp": {
     "extensions": [
       "./src/clear-screen.ts"
-    ]
+    ],
+    "settings": {
+      "key": {
+        "type": "string",
+        "default": "ctrl+l",
+        "description": "The key that clears the screen, named as in omp's keybindings.yml"
+      }
+    }
   },
   "scripts": {
     "test": "bun test test/unit",
