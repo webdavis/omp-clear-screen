@@ -9,6 +9,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@oh-my-pi/pi-coding-agent": "19.1.0",
     "prettier": "^3.10.1",
     "typescript": "^7.0.2"
   }

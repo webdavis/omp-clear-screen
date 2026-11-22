@@ -31,6 +31,14 @@ test("handleKey ignores any other key", () => {
   expect(answer).toBeUndefined();
 });
 
+test("handleKey clears the screen on ctrl+l sent in the Kitty keyboard protocol", () => {
+  const { sut, screen } = makeSUT();
+
+  sut.handleKey("\x1b[108;5u");
+
+  expect(screen.messages).toEqual(["clear"]);
+});
+
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new CtrlLScreenClearer(screen);
