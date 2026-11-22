@@ -30,6 +30,13 @@ test("clearKey answers ctrl+l when the key that is set is not text", async () =>
   expect(await sut.clearKey("/a/project")).toBe("ctrl+l");
 });
 
+test("clearKey answers ctrl+l when omp's settings cannot be read", async () => {
+  const { sut, store } = makeSUT();
+  store.cannotBeRead();
+
+  expect(await sut.clearKey("/a/project")).toBe("ctrl+l");
+});
+
 function makeSUT() {
   const store = new PluginSettingsStoreSpy();
   const sut = new OmpSettings(store);
