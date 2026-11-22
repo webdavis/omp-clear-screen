@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
 import { CtrlLScreenClearer } from "../src/ctrl-l-screen-clearer.ts";
+import { OmpKeyboard } from "../src/omp-keyboard.ts";
 import { ScreenSpy } from "./helpers/screen-spy.ts";
 
 test("init does not message the screen", () => {
@@ -67,6 +68,6 @@ test("clear reports an error when omp's transcript cannot be found", async () =>
 
 function makeSUT() {
   const screen = new ScreenSpy();
-  const sut = new CtrlLScreenClearer(screen);
+  const sut = new CtrlLScreenClearer(new OmpKeyboard(), screen);
   return { sut, screen };
 }

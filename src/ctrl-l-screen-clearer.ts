@@ -1,12 +1,15 @@
-import { matchesKey } from "@oh-my-pi/pi-tui";
+import type { Keyboard } from "./keyboard.ts";
 import type { Screen } from "./screen.ts";
 import type { KeyAnswer, ScreenClearer } from "./screen-clearer.ts";
 
 export class CtrlLScreenClearer implements ScreenClearer {
-  constructor(private readonly screen: Screen) {}
+  constructor(
+    private readonly keyboard: Keyboard,
+    private readonly screen: Screen,
+  ) {}
 
   handleKey(data: string): KeyAnswer {
-    if (!matchesKey(data, "ctrl+l")) return undefined;
+    if (!this.keyboard.isCtrlL(data)) return undefined;
     void this.clear();
     return { consume: true };
   }
