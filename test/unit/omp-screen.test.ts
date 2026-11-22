@@ -61,6 +61,13 @@ test("clear redraws the screen without its scrollback", async () => {
   expect(context.renderRequests).toEqual([[true, { clearScrollback: true }]]);
 });
 
+test("clear answers true when it found the transcript", async () => {
+  const { sut, context } = makeSUT();
+  context.showScreen(new TranscriptSpy());
+
+  expect(await sut.clear()).toBe(true);
+});
+
 function makeSUT() {
   const context = new ContextSpy();
   const sut = new OmpScreen(context);

@@ -33,13 +33,13 @@ export class OmpScreen {
     this.context.ui.notify(message, "error");
   }
 
-  async clear(): Promise<void> {
-    await this.context.ui.custom<void>((tui, _theme, _keybindings, done) => {
+  clear(): Promise<boolean> {
+    return this.context.ui.custom<boolean>((tui, _theme, _keybindings, done) => {
       const transcript = findTranscript(tui);
       transcript?.dispose();
       transcript?.clear();
       tui.requestRender(true, { clearScrollback: true });
-      done();
+      done(true);
       return { render: () => [], invalidate: () => {} };
     });
   }
