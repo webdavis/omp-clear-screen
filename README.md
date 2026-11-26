@@ -7,7 +7,7 @@ The session and the model's context are kept. This is not related to omp's own `
 ## Install
 
 ```sh
-omp plugin install npm:omp-clearscreen
+omp plugin install npm:@webdavis/omp-clearscreen
 ```
 
 Restart omp after the install.
@@ -29,7 +29,7 @@ While a response is running, the extension shows a warning and clears nothing.
 `Ctrl+L` is the default. To clear the screen with another key, set it and restart omp:
 
 ```sh
-omp plugin config set omp-clearscreen key alt+k
+omp plugin config set @webdavis/omp-clearscreen key alt+k
 ```
 
 Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`, with its modifiers in the order `ctrl`, `alt`, `shift`, `super`. A name omp does not know clears nothing. `/clearscreen` works whichever key is set.
