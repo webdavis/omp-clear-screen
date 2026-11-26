@@ -2,7 +2,15 @@ import type { ExtensionContext } from "@oh-my-pi/pi-coding-agent";
 import type { Component, Container } from "@oh-my-pi/pi-tui";
 import type { Screen } from "./screen.ts";
 
-export type OmpContext = Pick<ExtensionContext, "isIdle"> & { ui: Pick<ExtensionContext["ui"], "notify" | "custom"> };
+export type OmpContext = Pick<ExtensionContext, "isIdle"> & {
+  ui: Pick<ExtensionContext["ui"], "notify" | "setWidget">;
+};
+
+const BLANK_ROWS_WIDGET = "omp-clearscreen";
+
+function blankRows(count: number): string[] {
+  return new Array<string>(count).fill("");
+}
 
 // omp exposes no handle to its transcript, so it is recognised by the method only the transcript has.
 function isTranscript(component: Component): component is Container {
@@ -35,15 +43,17 @@ export class OmpScreen implements Screen {
   }
 
   clear(): Promise<boolean> {
-    return this.context.ui.custom<boolean>((tui, _theme, _keybindings, done) => {
-      const transcript = findTranscript(tui);
-      if (transcript) {
-        transcript.dispose();
-        transcript.clear();
-        tui.requestRender(true, { clearScrollback: true });
-      }
-      done(transcript !== undefined);
-      return { render: () => [], invalidate: () => {} };
-    });
+    this.context.ui.setWidget(BLANK_ROWS_WIDGET, (tui) => ({
+      render: () => {
+        this.removeBlankRowsOnceDrawn();
+        return blankRows(tui.terminal.rows);
+      },
+      invalidate: () => {},
+    }));
+    return Promise.resolve(true);
+  }
+
+  private removeBlankRowsOnceDrawn(): void {
+    setTimeout(() => this.context.ui.setWidget(BLANK_ROWS_WIDGET, undefined));
   }
 }

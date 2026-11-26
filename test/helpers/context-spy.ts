@@ -1,27 +1,36 @@
 import type { OmpContext } from "../../src/omp-screen.ts";
 
-type ShowsACustomComponent = (tui: never, theme: never, keybindings: never, done: (result: never) => void) => unknown;
+type Widget = (tui: { terminal: { columns: number; rows: number } }) => { render(width: number): readonly string[] };
+
+const COLUMNS = 80;
 
 export class ContextSpy implements OmpContext {
   readonly cwd = "/a/project";
+  readonly terminalRows = 24;
+  readonly messages: string[] = [];
   readonly notifications: { message: string; level?: string }[] = [];
-  readonly renderRequests: unknown[][] = [];
   private idle = true;
-  private screen: object = { children: [] };
+  private readonly widgets = new Map<string, Widget>();
   private readonly keyListeners = new Set<(data: string) => unknown>();
 
   readonly ui = {
     notify: (message: string, level?: string): void => {
+      this.messages.push("notify");
       this.notifications.push({ message, level });
+    },
+    setWidget: (key: string, widget: unknown): void => {
+      if (widget) {
+        this.messages.push("setWidget");
+        this.widgets.set(key, widget as Widget);
+      } else {
+        this.messages.push("removeWidget");
+        this.widgets.delete(key);
+      }
     },
     onTerminalInput: (listener: (data: string) => unknown): (() => void) => {
       this.keyListeners.add(listener);
       return () => this.keyListeners.delete(listener);
     },
-    custom: <T>(show: ShowsACustomComponent): Promise<T> =>
-      new Promise((resolve) => {
-        show(this.screen as never, {} as never, {} as never, resolve as never);
-      }),
   };
 
   ompIsWorking(): void {
@@ -36,13 +45,9 @@ export class ContextSpy implements OmpContext {
     for (const listener of this.keyListeners) listener(data);
   }
 
-  showScreen(...children: object[]): void {
-    this.screen = {
-      children,
-      requestRender: (...request: unknown[]) => {
-        this.renderRequests.push(request);
-      },
-    };
+  drawScreen(): string[] {
+    const tui = { terminal: { columns: COLUMNS, rows: this.terminalRows } };
+    return [...this.widgets.values()].flatMap((widget) => [...widget(tui).render(COLUMNS)]);
   }
 
   isIdle(): boolean {
