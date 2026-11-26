@@ -13,7 +13,7 @@ test("clearKey reads this plugin's settings for the project it is given", async 
 
   await sut.clearKey("/a/project");
 
-  expect(store.messages).toEqual([["omp-clear-screen", "/a/project"]]);
+  expect(store.messages).toEqual([["omp-clearscreen", "/a/project"]]);
 });
 
 test("clearKey answers the key that is set", async () => {
