@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "omp-clearscreen",
+      "name": "@webdavis/omp-clearscreen",
       "devDependencies": {
         "@oh-my-pi/pi-coding-agent": "19.2.0",
         "prettier": "^3.10.1",

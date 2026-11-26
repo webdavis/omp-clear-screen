@@ -1,5 +1,5 @@
 {
-  "name": "omp-clearscreen",
+  "name": "@webdavis/omp-clearscreen",
   "version": "0.1.0",
   "description": "Clear omp's screen with Ctrl+L, keeping the scrollback, the session and its context.",
   "keywords": [
