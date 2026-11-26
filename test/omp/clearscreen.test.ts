@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { clearScreenExtensionWith } from "../../src/clear-screen.ts";
+import { clearscreenExtensionWith } from "../../src/clearscreen.ts";
 import { ContextSpy } from "../helpers/context-spy.ts";
 import { OmpSpy } from "../helpers/omp-spy.ts";
 import { SettingsSpy } from "../helpers/settings-spy.ts";
@@ -77,6 +77,6 @@ function makeSUT(key = "ctrl+l") {
   const transcript = new TranscriptSpy();
   const settings = new SettingsSpy(key);
   context.showScreen(transcript);
-  clearScreenExtensionWith(settings)(omp);
+  clearscreenExtensionWith(settings)(omp);
   return { omp, context, transcript, settings };
 }
