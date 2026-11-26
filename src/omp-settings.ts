@@ -8,7 +8,7 @@ export class OmpSettings implements Settings {
 
   async clearKey(cwd: string): Promise<string> {
     try {
-      const { key } = await this.store.read("omp-clearscreen", cwd);
+      const { key } = await this.store.read("@webdavis/omp-clearscreen", cwd);
       return typeof key === "string" ? key : DEFAULT_KEY;
     } catch {
       return DEFAULT_KEY;

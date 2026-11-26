@@ -1,1 +1,1 @@
-{ "plugins": {}, "settings": { "omp-clearscreen": { "key": "alt+k" } } }
+{ "plugins": {}, "settings": { "@webdavis/omp-clearscreen": { "key": "alt+k" } } }
