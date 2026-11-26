@@ -20,16 +20,16 @@ test("handleKey clears the screen on the key that clears", () => {
 test("handleKey keeps the key that clears from omp", () => {
   const { sut } = makeSUT();
 
-  expect(sut.handleKey(CLEAR_KEY)).toEqual({ consume: true });
+  expect(sut.handleKey(CLEAR_KEY)).toBe(true);
 });
 
 test("handleKey ignores any other key", () => {
   const { sut, clearer } = makeSUT();
 
-  const answer = sut.handleKey("any other key");
+  const handled = sut.handleKey("any other key");
 
   expect(clearer.messages).toEqual([]);
-  expect(answer).toBeUndefined();
+  expect(handled).toBe(false);
 });
 
 function makeSUT() {

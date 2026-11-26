@@ -4,54 +4,62 @@ import { ContextSpy } from "../helpers/context-spy.ts";
 import { OmpSpy } from "../helpers/omp-spy.ts";
 import { SettingsSpy } from "../helpers/settings-spy.ts";
 
-test("ctrl+l in an omp session clears the screen", async () => {
+test("ctrl+l from the prompt clears the screen", async () => {
   const { omp, context } = makeSUT();
   await omp.startSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
   expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("the key set in omp's settings clears the screen in an omp session", async () => {
+test("the key set in omp's settings clears the screen", async () => {
   const { omp, context } = makeSUT("alt+k");
   await omp.startSession(context);
 
-  context.keyArrives("\x1bk");
+  context.keyArrives("alt+k");
 
   expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l clears the screen after omp switches session", async () => {
+test("a key other than the clear key reaches the prompt", async () => {
   const { omp, context } = makeSUT();
   await omp.startSession(context);
-  context.ompDropsKeyListeners();
+
+  context.keyArrives("ctrl+k");
+
+  expect(context.keysPassedOn).toEqual(["ctrl+k"]);
+});
+
+test("ctrl+l still clears the screen after omp switches session", async () => {
+  const { omp, context } = makeSUT();
+  await omp.startSession(context);
+  context.ompDropsKeyHandlers();
   await omp.switchSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
   expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l clears the screen after omp branches the session", async () => {
+test("ctrl+l still clears the screen after omp branches the session", async () => {
   const { omp, context } = makeSUT();
   await omp.startSession(context);
-  context.ompDropsKeyListeners();
+  context.ompDropsKeyHandlers();
   await omp.branchSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
   expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l clears the screen once when omp keeps the key listener across a session change", async () => {
+test("omp holds one key handler when it keeps the handler across session changes", async () => {
   const { omp, context } = makeSUT();
   await omp.startSession(context);
   await omp.switchSession(context);
+  await omp.branchSession(context);
 
-  context.keyArrives("\f");
-
-  expect(context.messages).toEqual(["setWidget"]);
+  expect(context.keyHandlers).toHaveLength(1);
 });
 
 test("the clearscreen command clears the screen", async () => {

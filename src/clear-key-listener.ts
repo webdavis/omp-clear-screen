@@ -1,4 +1,4 @@
-import type { KeyAnswer, KeyListener } from "./key-listener.ts";
+import type { KeyListener } from "./key-listener.ts";
 import type { Keyboard } from "./keyboard.ts";
 import type { ScreenClearer } from "./screen-clearer.ts";
 
@@ -8,9 +8,9 @@ export class ClearKeyListener implements KeyListener {
     private readonly clearer: ScreenClearer,
   ) {}
 
-  handleKey(data: string): KeyAnswer {
-    if (!this.keyboard.isClearKey(data)) return undefined;
+  handleKey(keyId: string): boolean {
+    if (!this.keyboard.isClearKey(keyId)) return false;
     void this.clearer.clear();
-    return { consume: true };
+    return true;
   }
 }

@@ -23,12 +23,11 @@ export class OmpScreen implements Screen {
   }
 
   clear(): void {
-    this.context.ui.setWidget(BLANK_ROWS_WIDGET, (tui) => ({
+    this.context.ui.setWidget(BLANK_ROWS_WIDGET, (host) => ({
       render: () => {
         this.removeBlankRowsOnceDrawn();
-        return blankRows(tui.terminal.rows);
+        return blankRows(host.size().rows);
       },
-      invalidate: () => {},
     }));
   }
 

@@ -1,5 +1,3 @@
-export type KeyAnswer = { consume: true } | undefined;
-
 export interface KeyListener {
-  handleKey(data: string): KeyAnswer;
+  handleKey(keyId: string): boolean;
 }

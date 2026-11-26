@@ -1,6 +1,7 @@
 import type { OmpContext } from "../../src/omp-screen.ts";
 
-type Widget = (tui: { terminal: { columns: number; rows: number } }) => { render(width: number): readonly string[] };
+type Widget = (host: { size(): { columns: number; rows: number } }) => { render(width: number): readonly string[] };
+type KeyHandler = (key: { id: string }) => boolean;
 
 const COLUMNS = 80;
 
@@ -9,9 +10,10 @@ export class ContextSpy implements OmpContext {
   readonly terminalRows = 24;
   readonly messages: string[] = [];
   readonly notifications: { message: string; level?: string }[] = [];
+  readonly keyHandlers: KeyHandler[] = [];
+  readonly keysPassedOn: string[] = [];
   private idle = true;
   private readonly widgets = new Map<string, Widget>();
-  private readonly keyListeners = new Set<(data: string) => unknown>();
 
   readonly ui = {
     notify: (message: string, level?: string): void => {
@@ -27,9 +29,13 @@ export class ContextSpy implements OmpContext {
         this.widgets.delete(key);
       }
     },
-    onTerminalInput: (listener: (data: string) => unknown): (() => void) => {
-      this.keyListeners.add(listener);
-      return () => this.keyListeners.delete(listener);
+    composer: {
+      addKeyHandler: (handler: KeyHandler): (() => void) => {
+        this.keyHandlers.push(handler);
+        return () => {
+          this.keyHandlers.splice(this.keyHandlers.indexOf(handler), 1);
+        };
+      },
     },
   };
 
@@ -37,17 +43,18 @@ export class ContextSpy implements OmpContext {
     this.idle = false;
   }
 
-  ompDropsKeyListeners(): void {
-    this.keyListeners.clear();
+  ompDropsKeyHandlers(): void {
+    this.keyHandlers.length = 0;
   }
 
-  keyArrives(data: string): void {
-    for (const listener of this.keyListeners) listener(data);
+  keyArrives(id: string): void {
+    const handled = this.keyHandlers.some((handler) => handler({ id }));
+    if (!handled) this.keysPassedOn.push(id);
   }
 
   drawScreen(): string[] {
-    const tui = { terminal: { columns: COLUMNS, rows: this.terminalRows } };
-    return [...this.widgets.values()].flatMap((widget) => [...widget(tui).render(COLUMNS)]);
+    const host = { size: () => ({ columns: COLUMNS, rows: this.terminalRows }) };
+    return [...this.widgets.values()].flatMap((widget) => [...widget(host).render(COLUMNS)]);
   }
 
   isIdle(): boolean {
