@@ -9,7 +9,6 @@ export class IdleScreenClearer implements ScreenClearer {
       this.screen.warn("Clear the screen once the current response has finished.");
       return;
     }
-    const found = await this.screen.clear();
-    if (!found) this.screen.reportError("omp-clearscreen cannot find omp's transcript; omp has changed.");
+    this.screen.clear();
   }
 }

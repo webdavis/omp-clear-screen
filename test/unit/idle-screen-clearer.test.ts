@@ -25,15 +25,6 @@ test("clear warns and leaves the screen alone while a response is running", () =
   expect(screen.messages).toEqual(["warn"]);
 });
 
-test("clear reports an error when omp's transcript cannot be found", async () => {
-  const { sut, screen } = makeSUT();
-  screen.transcriptIsMissing();
-
-  await sut.clear();
-
-  expect(screen.messages).toEqual(["clear", "reportError"]);
-});
-
 function makeSUT() {
   const screen = new ScreenSpy();
   const sut = new IdleScreenClearer(screen);

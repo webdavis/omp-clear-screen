@@ -31,14 +31,6 @@ test("warn shows a warning in omp", () => {
   expect(context.notifications).toEqual([{ message: "a warning", level: "warning" }]);
 });
 
-test("reportError shows an error in omp", () => {
-  const { sut, context } = makeSUT();
-
-  sut.reportError("an error");
-
-  expect(context.notifications).toEqual([{ message: "an error", level: "error" }]);
-});
-
 test("clear fills the screen with blank rows", () => {
   const { sut, context } = makeSUT();
 
