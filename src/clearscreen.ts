@@ -21,17 +21,16 @@ export function clearscreenExtensionWith(settings: Settings) {
 
     const nothingToStop = () => {};
     let stopListening = nothingToStop;
-    const listenForTheKey = async (_event: unknown, ctx: ExtensionContext) => {
+    const listenForTheClearKeyInTheCurrentSession = async (_event: unknown, ctx: ExtensionContext) => {
       const keyboard = new OmpKeyboard(await settings.clearKey(ctx.cwd));
       const listener = new ClearKeyListener(keyboard, clearerFor(ctx));
       stopListening();
       stopListening = ctx.ui.composer?.addKeyHandler((key) => listener.handleKey(key.id)) ?? nothingToStop;
     };
 
-    // omp drops an extension's key listeners when the session changes, and does not start the session again.
-    pi.on("session_start", listenForTheKey);
-    pi.on("session_switch", listenForTheKey);
-    pi.on("session_branch", listenForTheKey);
+    pi.on("session_start", listenForTheClearKeyInTheCurrentSession);
+    pi.on("session_switch", listenForTheClearKeyInTheCurrentSession);
+    pi.on("session_branch", listenForTheClearKeyInTheCurrentSession);
   };
 }
 
