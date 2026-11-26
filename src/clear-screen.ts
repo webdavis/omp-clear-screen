@@ -14,7 +14,7 @@ function clearerFor(ctx: ExtensionContext): ScreenClearer {
 
 export function clearScreenExtensionWith(settings: Settings) {
   return (pi: Pick<ExtensionAPI, "on" | "registerCommand">) => {
-    pi.registerCommand("clear-screen", {
+    pi.registerCommand("clearscreen", {
       description: "Clear the screen and scrollback, keeping the session and its context",
       handler: (_args, ctx) => clearerFor(ctx).clear(),
     });

@@ -55,18 +55,18 @@ test("ctrl+l empties the transcript once when omp keeps the key listener across 
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
-test("the clear-screen command empties the transcript", async () => {
+test("the clearscreen command empties the transcript", async () => {
   const { omp, context, transcript } = makeSUT();
 
-  await omp.runCommand("clear-screen", context);
+  await omp.runCommand("clearscreen", context);
 
   expect(transcript.messages).toEqual(["dispose", "clear"]);
 });
 
-test("the clear-screen command does not read the key setting", async () => {
+test("the clearscreen command does not read the key setting", async () => {
   const { omp, context, settings } = makeSUT();
 
-  await omp.runCommand("clear-screen", context);
+  await omp.runCommand("clearscreen", context);
 
   expect(settings.messages).toEqual([]);
 });
