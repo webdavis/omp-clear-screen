@@ -1,1 +1,1 @@
-{ "plugins": {}, "settings": { "omp-clear-screen": { "key": "alt+k" } } }
+{ "plugins": {}, "settings": { "omp-clearscreen": { "key": "alt+k" } } }

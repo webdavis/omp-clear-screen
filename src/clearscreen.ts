@@ -12,9 +12,9 @@ function clearerFor(ctx: ExtensionContext): ScreenClearer {
   return new IdleScreenClearer(new OmpScreen(ctx));
 }
 
-export function clearScreenExtensionWith(settings: Settings) {
+export function clearscreenExtensionWith(settings: Settings) {
   return (pi: Pick<ExtensionAPI, "on" | "registerCommand">) => {
-    pi.registerCommand("clear-screen", {
+    pi.registerCommand("clearscreen", {
       description: "Clear the screen and scrollback, keeping the session and its context",
       handler: (_args, ctx) => clearerFor(ctx).clear(),
     });
@@ -34,4 +34,4 @@ export function clearScreenExtensionWith(settings: Settings) {
   };
 }
 
-export default clearScreenExtensionWith(new OmpSettings(new OmpPluginSettingsStore()));
+export default clearscreenExtensionWith(new OmpSettings(new OmpPluginSettingsStore()));

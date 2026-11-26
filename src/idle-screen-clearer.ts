@@ -10,6 +10,6 @@ export class IdleScreenClearer implements ScreenClearer {
       return;
     }
     const found = await this.screen.clear();
-    if (!found) this.screen.reportError("clear-screen cannot find omp's transcript; omp has changed.");
+    if (!found) this.screen.reportError("omp-clearscreen cannot find omp's transcript; omp has changed.");
   }
 }
