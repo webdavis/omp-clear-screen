@@ -1,4 +1,4 @@
-# omp-clear-screen
+# omp-clearscreen
 
 Press `Ctrl+L` in [omp](https://github.com/can1357/oh-my-pi) to clear the screen and the terminal scrollback, just like you would in your everyday Bash terminal.
 
@@ -7,7 +7,7 @@ The session and the model's context are kept. This is not related to omp's own `
 ## Install
 
 ```sh
-omp plugin install npm:omp-clear-screen
+omp plugin install npm:omp-clearscreen
 ```
 
 Restart omp after the install.
@@ -20,7 +20,7 @@ app.live.toggle: "alt+'"
 
 ## Use
 
-Press `Ctrl+L`, or run `/clear-screen`.
+Press `Ctrl+L`, or run `/clearscreen`.
 
 While a response is running, the extension shows a warning and clears nothing.
 
@@ -29,10 +29,10 @@ While a response is running, the extension shows a warning and clears nothing.
 `Ctrl+L` is the default. To clear the screen with another key, set it and restart omp:
 
 ```sh
-omp plugin config set omp-clear-screen key alt+k
+omp plugin config set omp-clearscreen key alt+k
 ```
 
-Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`. A name omp does not know clears nothing. `/clear-screen` works whichever key is set.
+Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`. A name omp does not know clears nothing. `/clearscreen` works whichever key is set.
 
 ## Limits
 
