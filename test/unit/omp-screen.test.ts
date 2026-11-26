@@ -1,7 +1,14 @@
-import { expect, test } from "bun:test";
+import { afterEach, beforeEach, expect, jest, test } from "bun:test";
 import { OmpScreen } from "../../src/omp-screen.ts";
 import { ContextSpy } from "../helpers/context-spy.ts";
-import { TranscriptSpy } from "../helpers/transcript-spy.ts";
+
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 
 test("isBusy answers true while omp is working", () => {
   const { sut, context } = makeSUT();
@@ -24,76 +31,41 @@ test("warn shows a warning in omp", () => {
   expect(context.notifications).toEqual([{ message: "a warning", level: "warning" }]);
 });
 
-test("reportError shows an error in omp", () => {
+test("clear fills the screen with blank rows", () => {
   const { sut, context } = makeSUT();
 
-  sut.reportError("an error");
+  sut.clear();
 
-  expect(context.notifications).toEqual([{ message: "an error", level: "error" }]);
+  expect(context.drawScreen()).toEqual(new Array(context.terminalRows).fill(""));
 });
 
-test("clear finds a transcript nested inside other components", async () => {
+test("clear keeps the blank rows until omp has drawn them", () => {
   const { sut, context } = makeSUT();
-  const transcript = new TranscriptSpy();
-  context.showScreen({ children: [{ children: [transcript] }] });
 
-  await sut.clear();
+  sut.clear();
+  jest.runAllTimers();
 
-  expect(transcript.messages).toContain("clear");
+  expect(context.drawScreen()).toHaveLength(context.terminalRows);
 });
 
-test("clear looks past a component that holds no others", async () => {
+test("clear takes the blank rows away once omp has drawn them", () => {
   const { sut, context } = makeSUT();
-  const transcript = new TranscriptSpy();
-  context.showScreen({}, transcript);
 
-  await sut.clear();
+  sut.clear();
+  context.drawScreen();
+  jest.runAllTimers();
 
-  expect(transcript.messages).toContain("clear");
+  expect(context.drawScreen()).toEqual([]);
 });
 
-test("clear looks past a component whose children are not a list", async () => {
+test("clear keeps every message in the scrollback by only adding and removing the blank rows", () => {
   const { sut, context } = makeSUT();
-  const transcript = new TranscriptSpy();
-  context.showScreen({ children: {} }, transcript);
 
-  await sut.clear();
+  sut.clear();
+  context.drawScreen();
+  jest.runAllTimers();
 
-  expect(transcript.messages).toContain("clear");
-});
-
-test("clear disposes the transcript's components before it empties it", async () => {
-  const { sut, context } = makeSUT();
-  const transcript = new TranscriptSpy();
-  context.showScreen(transcript);
-
-  await sut.clear();
-
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
-});
-
-test("clear redraws the screen without its scrollback", async () => {
-  const { sut, context } = makeSUT();
-  context.showScreen(new TranscriptSpy());
-
-  await sut.clear();
-
-  expect(context.renderRequests).toEqual([[true, { clearScrollback: true }]]);
-});
-
-test("clear answers true when it found the transcript", async () => {
-  const { sut, context } = makeSUT();
-  context.showScreen(new TranscriptSpy());
-
-  expect(await sut.clear()).toBe(true);
-});
-
-test("clear answers false and redraws nothing when omp has no transcript", async () => {
-  const { sut, context } = makeSUT();
-  context.showScreen();
-
-  expect(await sut.clear()).toBe(false);
-  expect(context.renderRequests).toEqual([]);
+  expect(context.messages).toEqual(["setWidget", "removeWidget"]);
 });
 
 function makeSUT() {

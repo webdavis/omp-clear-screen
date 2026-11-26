@@ -3,64 +3,71 @@ import { clearscreenExtensionWith } from "../../src/clearscreen.ts";
 import { ContextSpy } from "../helpers/context-spy.ts";
 import { OmpSpy } from "../helpers/omp-spy.ts";
 import { SettingsSpy } from "../helpers/settings-spy.ts";
-import { TranscriptSpy } from "../helpers/transcript-spy.ts";
 
-test("ctrl+l in an omp session empties the transcript", async () => {
-  const { omp, context, transcript } = makeSUT();
+test("ctrl+l from the prompt clears the screen", async () => {
+  const { omp, context } = makeSUT();
   await omp.startSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("the key set in omp's settings empties the transcript in an omp session", async () => {
-  const { omp, context, transcript } = makeSUT("alt+k");
+test("the key set in omp's settings clears the screen", async () => {
+  const { omp, context } = makeSUT("alt+k");
   await omp.startSession(context);
 
-  context.keyArrives("\x1bk");
+  context.keyArrives("alt+k");
 
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l empties the transcript after omp switches session", async () => {
-  const { omp, context, transcript } = makeSUT();
+test("a key other than the clear key reaches the prompt", async () => {
+  const { omp, context } = makeSUT();
   await omp.startSession(context);
-  context.ompDropsKeyListeners();
+
+  context.keyArrives("ctrl+k");
+
+  expect(context.keysPassedOn).toEqual(["ctrl+k"]);
+});
+
+test("ctrl+l still clears the screen after omp switches session", async () => {
+  const { omp, context } = makeSUT();
+  await omp.startSession(context);
+  context.ompDropsKeyHandlers();
   await omp.switchSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l empties the transcript after omp branches the session", async () => {
-  const { omp, context, transcript } = makeSUT();
+test("ctrl+l still clears the screen after omp branches the session", async () => {
+  const { omp, context } = makeSUT();
   await omp.startSession(context);
-  context.ompDropsKeyListeners();
+  context.ompDropsKeyHandlers();
   await omp.branchSession(context);
 
-  context.keyArrives("\f");
+  context.keyArrives("ctrl+l");
 
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
-test("ctrl+l empties the transcript once when omp keeps the key listener across a session change", async () => {
-  const { omp, context, transcript } = makeSUT();
+test("omp holds one key handler when it keeps the handler across session changes", async () => {
+  const { omp, context } = makeSUT();
   await omp.startSession(context);
   await omp.switchSession(context);
+  await omp.branchSession(context);
 
-  context.keyArrives("\f");
-
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.keyHandlers).toHaveLength(1);
 });
 
-test("the clearscreen command empties the transcript", async () => {
-  const { omp, context, transcript } = makeSUT();
+test("the clearscreen command clears the screen", async () => {
+  const { omp, context } = makeSUT();
 
   await omp.runCommand("clearscreen", context);
 
-  expect(transcript.messages).toEqual(["dispose", "clear"]);
+  expect(context.drawScreen()).toEqual(A_SCREEN_OF_BLANK_ROWS);
 });
 
 test("the clearscreen command does not read the key setting", async () => {
@@ -71,12 +78,12 @@ test("the clearscreen command does not read the key setting", async () => {
   expect(settings.messages).toEqual([]);
 });
 
+const A_SCREEN_OF_BLANK_ROWS = new Array(new ContextSpy().terminalRows).fill("");
+
 function makeSUT(key = "ctrl+l") {
   const omp = new OmpSpy();
   const context = new ContextSpy();
-  const transcript = new TranscriptSpy();
   const settings = new SettingsSpy(key);
-  context.showScreen(transcript);
   clearscreenExtensionWith(settings)(omp);
-  return { omp, context, transcript, settings };
+  return { omp, context, settings };
 }

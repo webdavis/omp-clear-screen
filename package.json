@@ -1,7 +1,7 @@
 {
   "name": "omp-clearscreen",
   "version": "0.1.0",
-  "description": "Clear omp's screen and scrollback with Ctrl+L, keeping the session and its context.",
+  "description": "Clear omp's screen with Ctrl+L, keeping the scrollback, the session and its context.",
   "keywords": [
     "omp",
     "oh-my-pi",
@@ -45,7 +45,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@oh-my-pi/pi-coding-agent": "19.1.0",
+    "@oh-my-pi/pi-coding-agent": "19.2.0",
     "prettier": "^3.10.1",
     "typescript": "^7.0.2"
   }

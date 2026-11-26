@@ -1,3 +1,3 @@
 export interface Keyboard {
-  isClearKey(data: string): boolean;
+  isClearKey(keyId: string): boolean;
 }
