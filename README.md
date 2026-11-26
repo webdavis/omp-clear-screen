@@ -1,6 +1,6 @@
 # omp-clearscreen
 
-Press `Ctrl+L` in [omp](https://github.com/can1357/oh-my-pi) to clear the screen and the terminal scrollback, just like you would in your everyday Bash terminal.
+Press `Ctrl+L` in [omp](https://github.com/can1357/oh-my-pi) to clear the screen, just like you would in your everyday Bash terminal. The messages move up into the terminal's scrollback, where you can still scroll back to them.
 
 The session and the model's context are kept. This is not related to omp's own `/clear`, which drops the context.
 
@@ -32,12 +32,12 @@ While a response is running, the extension shows a warning and clears nothing.
 omp plugin config set omp-clearscreen key alt+k
 ```
 
-Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`. A name omp does not know clears nothing. `/clearscreen` works whichever key is set.
+Name the key the way omp's `keybindings.yml` does, such as `alt+k` or `ctrl+shift+k`, with its modifiers in the order `ctrl`, `alt`, `shift`, `super`. A name omp does not know clears nothing. `/clearscreen` works whichever key is set.
 
 ## Limits
 
-- Cleared messages do not return to the screen in that view of the session. They stay in the session file and in the model's context.
-- The extension finds omp's transcript by a method name that is internal to omp. If an omp update renames that method, the extension shows an error and clears nothing. It is tested with omp 19.1.0.
+- The extension needs omp 19.2 or later.
+- The key clears the screen only while the prompt has the keyboard.
 
 ## Develop
 
